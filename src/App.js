@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import * as Constants from './constants';
+import Video from './components/Video'
 
 function App() {
+  const [data, setData] = useState({ videos: [] });
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      const queryResult = await axios.post(
+          Constants.GRAPHQL_API, {
+          query: Constants.GET_VIDEOS
+        }
+      );
+      const result = queryResult.data.data; 
+      setData({ videos: result.videos });
+    };
+ 
+    fetchData();
+  });
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>{Constants.TITLE}</h1>
+      <ul>
+        {data.videos.map(item => (
+          <li key={item.id}>
+            <Video item={item}/>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
-
+ 
 export default App;
