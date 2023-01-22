@@ -1,17 +1,32 @@
-export const GRAPHQL_API = 'http://localhost:8080/graphql';
+export const GRAPHQL_API = 'http://localhost:1337/graphql';
 
-export const TITLE = "Video List";
+export const TITLE = "List";
 
-export const GET_VIDEOS = `
-  query videos {
-    videos {    
+export const GET_LIST = `
+query List {
+  institutes{
+    data{
       id
-      title
-      url
-      author {
-        id
-        name
+      attributes{
+        institute_name
+        branches{
+          data{
+            id
+            attributes{
+              branch_name
+              courses{
+                data{
+                  id
+                  attributes{
+                    course_name                    
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
+}
  `;
